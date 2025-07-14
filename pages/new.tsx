@@ -22,8 +22,14 @@ export default function NewPack({ user, loading }: Props) {
 
   // Use useEffect for redirects to avoid hooks order issues
   useEffect(() => {
-    if (!user && !loading) {
-      router.push('/')
+    if (!loading) {
+      if (!user) {
+        // Not authenticated, redirect to signin
+        router.push('/signin')
+      } else if (user.payment_status !== 'paid') {
+        // Authenticated but not paid, redirect to landing
+        router.push('/landing')
+      }
     }
   }, [user, loading, router])
 

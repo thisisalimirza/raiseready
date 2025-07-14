@@ -17,8 +17,14 @@ export default function Dashboard({ user, loading }: Props) {
 
   // Use useEffect for redirects to avoid hooks order issues
   useEffect(() => {
-    if (!user && !loading) {
-      router.push('/')
+    if (!loading) {
+      if (!user) {
+        // Not authenticated, redirect to signin
+        router.push('/signin')
+      } else if (user.payment_status !== 'paid') {
+        // Authenticated but not paid, redirect to landing
+        router.push('/landing')
+      }
     }
   }, [user, loading, router])
 
@@ -59,7 +65,7 @@ export default function Dashboard({ user, loading }: Props) {
   const handleSignOut = async () => {
     try {
       await signOut()
-      router.push('/')
+      router.push('/signin')
     } catch (error) {
       console.error('Error signing out:', error)
     }

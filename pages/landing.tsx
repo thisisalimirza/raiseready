@@ -64,7 +64,7 @@ export default function Landing({ user, loading }: Props) {
   const handleSignOut = async () => {
     try {
       await signOut()
-      router.push('/')
+      router.push('/signin')
     } catch (error) {
       console.error('Error signing out:', error)
     }
@@ -107,7 +107,7 @@ export default function Landing({ user, loading }: Props) {
               ) : (
                 <>
                   <span className="text-sm text-gray-500">Already have an account?</span>
-                  <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
+                  <a href="/signin" className="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
                 </>
               )}
             </div>
