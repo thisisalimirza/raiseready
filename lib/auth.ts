@@ -2,10 +2,19 @@ import { supabase } from './supabase'
 import { User } from '@/types'
 
 export async function signInWithEmail(email: string) {
+  // Get the correct redirect URL based on environment
+  const getRedirectUrl = () => {
+    if (typeof window !== 'undefined') {
+      return `${window.location.origin}/dashboard`
+    }
+    // Fallback for server-side rendering
+    return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}/dashboard` : 'http://localhost:3000/dashboard'
+  }
+
   const { data, error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${window.location.origin}/dashboard`,
+      emailRedirectTo: getRedirectUrl(),
     },
   })
 
