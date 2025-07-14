@@ -131,11 +131,52 @@ async function generateNegotiationContent(data: {
   
   Make it personalized for a ${job_title} in ${city_or_remote}.`
 
-  // In a real implementation, you would call the Anthropic API here
-  // For now, we'll generate a mock response
-  const mockResponse = generateMockNegotiationContent(data)
-  
-  return mockResponse
+  try {
+    // Call Claude API to generate personalized content
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY!,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-3-sonnet-20240229',
+        max_tokens: 2000,
+        messages: [
+          {
+            role: 'user',
+            content: `${systemPrompt}
+
+Job Details:
+- Job Title: ${job_title}
+- Location: ${city_or_remote}
+- Current Salary: $${current_salary.toLocaleString()}
+- Target Salary: ${target_salary ? '$' + target_salary.toLocaleString() : 'Not specified'}
+- Market Average: $${marketData.average.toLocaleString()}
+- Market Range: $${marketData.p25.toLocaleString()} - $${marketData.p75.toLocaleString()}
+
+Key Achievements:
+${achievements.map((achievement, index) => `${index + 1}. ${achievement}`).join('\n')}
+
+Generate a comprehensive, personalized salary negotiation package in markdown format.`
+          }
+        ]
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(`Claude API error: ${response.status}`)
+    }
+
+    const aiData = await response.json()
+    return aiData.content[0].text.trim()
+
+  } catch (error) {
+    console.error('Error calling Claude API for negotiation content:', error)
+    // Fallback to mock content if Claude API fails
+    return generateMockNegotiationContent(data)
+  }
 }
 
 function generateMockNegotiationContent(data: {
