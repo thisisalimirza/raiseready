@@ -87,12 +87,71 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function generateManagerResponse(message: string, messages: any[], pack: any): Promise<string> {
-  // Mock manager responses based on common negotiation scenarios
-  const responses = getManagerResponses(message, messages, pack)
-  
-  // In a real implementation, you would use Claude API here
-  // For now, return a contextual mock response
-  return responses[Math.floor(Math.random() * responses.length)]
+  try {
+    // Build conversation history for Claude
+    const conversationHistory = messages.map(msg => 
+      `${msg.role === 'user' ? 'Employee' : 'Manager'}: ${msg.content}`
+    ).join('\n')
+
+    // Create the prompt for Claude
+    const prompt = `You are a supportive but realistic manager having a salary negotiation conversation with an employee. 
+
+Employee Details:
+- Job Title: ${pack.job_title}
+- Location: ${pack.city_or_remote}
+- Current Salary: $${pack.current_salary?.toLocaleString() || 'N/A'}
+- Target Salary: $${pack.target_salary?.toLocaleString() || 'N/A'}
+- Market Average: $${pack.market_data?.average?.toLocaleString() || 'N/A'}
+- Key Achievements: ${pack.achievements?.join(', ') || 'None provided'}
+
+Conversation so far:
+${conversationHistory}
+
+Employee: ${message}
+
+As the manager, respond in a way that:
+1. Acknowledges their points professionally
+2. Asks thoughtful follow-up questions
+3. Shows you're considering their request seriously
+4. Maintains a collaborative tone
+5. Occasionally raises realistic concerns or asks for clarification
+6. Keeps responses concise (2-3 sentences max)
+
+Manager:`
+
+    // Call Claude API
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY!,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-3-sonnet-20240229',
+        max_tokens: 200,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
+          }
+        ]
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error(`Claude API error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    return data.content[0].text.trim()
+
+  } catch (error) {
+    console.error('Error calling Claude API:', error)
+    // Fallback to mock responses if Claude API fails
+    const responses = getManagerResponses(message, messages, pack)
+    return responses[Math.floor(Math.random() * responses.length)]
+  }
 }
 
 function getManagerResponses(message: string, messages: any[], pack: any): string[] {
