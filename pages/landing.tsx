@@ -88,27 +88,27 @@ export default function Landing({ user, loading }: Props) {
                 <span className="ml-2 text-xl font-bold text-gray-900">RaiseReady</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center">
               {user ? (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 sm:space-x-3">
                   <button
                     onClick={handleGoToApp}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium transition-colors duration-200"
+                    className="bg-blue-600 text-white px-3 py-2 sm:px-4 rounded-md hover:bg-blue-700 font-medium transition-colors duration-200 text-sm sm:text-base"
                   >
                     {user.email}
                   </button>
                   <button
                     onClick={handleSignOut}
-                    className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors duration-200"
+                    className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors duration-200"
                   >
                     Sign Out
                   </button>
                 </div>
               ) : (
-                <>
-                  <span className="text-sm text-gray-500">Already have an account?</span>
-                  <a href="/signin" className="text-blue-600 hover:text-blue-700 font-medium">Sign In</a>
-                </>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3">
+                  <span className="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-0">Already have an account?</span>
+                  <a href="/signin" className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base whitespace-nowrap">Sign In</a>
+                </div>
               )}
             </div>
           </div>
@@ -479,6 +479,82 @@ export default function Landing({ user, loading }: Props) {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-900">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+          <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+            <div className="space-y-8 xl:col-span-1">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">R</span>
+                </div>
+                <span className="ml-2 text-xl font-bold text-white">RaiseReady</span>
+              </div>
+              <p className="text-gray-300 text-base">
+                Your personalized salary negotiation toolkit. Get market data, custom scripts, and AI-powered practice sessions to negotiate your dream salary.
+              </p>
+              <div className="flex space-x-6">
+                <a href="#" className="text-gray-400 hover:text-gray-300">
+                  <span className="sr-only">Twitter</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-gray-300">
+                  <span className="sr-only">LinkedIn</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Product</h3>
+                  <ul className="mt-4 space-y-4">
+                    <li><a href="#features" className="text-base text-gray-300 hover:text-white">Features</a></li>
+                    <li><a href="#pricing" className="text-base text-gray-300 hover:text-white">Pricing</a></li>
+                    <li><a href="/signin" className="text-base text-gray-300 hover:text-white">Sign In</a></li>
+                  </ul>
+                </div>
+                <div className="mt-12 md:mt-0">
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                  <ul className="mt-4 space-y-4">
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Help Center</a></li>
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Contact Us</a></li>
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Status</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                  <ul className="mt-4 space-y-4">
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">About</a></li>
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Blog</a></li>
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Careers</a></li>
+                  </ul>
+                </div>
+                <div className="mt-12 md:mt-0">
+                  <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                  <ul className="mt-4 space-y-4">
+                    <li><a href="/privacy" className="text-base text-gray-300 hover:text-white">Privacy Policy</a></li>
+                    <li><a href="/terms" className="text-base text-gray-300 hover:text-white">Terms of Service</a></li>
+                    <li><a href="#" className="text-base text-gray-300 hover:text-white">Cookie Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-12 border-t border-gray-700 pt-8">
+            <p className="text-base text-gray-400 xl:text-center">
+              &copy; {new Date().getFullYear()} RaiseReady. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
