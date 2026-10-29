@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
 import { User } from '@/types'
 import { onAuthStateChange } from '@/lib/auth'
+import { Analytics } from '@vercel/analytics/next'
 
 export default function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User | null>(null)
@@ -44,10 +45,13 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <Component 
-      {...pageProps} 
-      user={user}
-      loading={loading}
-    />
+    <>
+      <Component 
+        {...pageProps} 
+        user={user}
+        loading={loading}
+      />
+      <Analytics />
+    </>
   )
 }
